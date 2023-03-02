@@ -6,7 +6,7 @@ FROM
 
 ---- Query 02
 SELECT
-	last_name, first_name, hire_date
+	first_name, last_name, hire_date
 FROM
 	employees
 WHERE
@@ -14,45 +14,21 @@ WHERE
 
 ---- Query 03
 SELECT
-	dept_data.dept_no, dept_data.dept_name, emp_data.emp_no, emp_data.last_name, emp_data.first_name
+	departments.dept_no, departments.dept_name, employees.emp_no, employees.last_name, employees.first_name
 FROM
-	(
-		SELECT
-			dept_manager.emp_no AS emp_no, dept_manager.dept_no AS dept_no, last_name, first_name
-		FROM
-			employees INNER JOIN dept_manager ON employees.emp_no = dept_manager.emp_no
-	) emp_data
-	INNER JOIN
-	(
-		SELECT
-			dept_manager.emp_no AS emp_no, dept_manager.dept_no AS dept_no, dept_name
-		FROM
-			departments INNER JOIN dept_manager ON departments.dept_no = dept_manager.dept_no
-	) dept_data
-	ON dept_data.emp_no = emp_data.emp_no AND dept_data.dept_no = emp_data.dept_no;
+	employees INNER JOIN dept_manager ON employees.emp_no = dept_manager.emp_no
+	INNER JOIN departments ON dept_manager.dept_no = departments.dept_no;
 
 ---- Query 04
 SELECT
-	dept_data.dept_no, emp_data.emp_no, emp_data.last_name, emp_data.first_name, dept_data.dept_name
+	departments.dept_no, employees.emp_no, employees.last_name, employees.first_name, departments.dept_name
 FROM
-	(
-		SELECT
-			dept_emp.emp_no AS emp_no, dept_emp.dept_no AS dept_no, last_name, first_name
-		FROM
-			employees INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
-	) emp_data
-	INNER JOIN
-	(
-		SELECT
-			dept_emp.emp_no AS emp_no, dept_emp.dept_no AS dept_no, dept_name
-		FROM
-			departments INNER JOIN dept_emp ON departments.dept_no = dept_emp.dept_no
-	) dept_data
-	ON dept_data.emp_no = emp_data.emp_no AND dept_data.dept_no = emp_data.dept_no;
+	employees INNER JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
+	INNER JOIN departments ON dept_emp.dept_no = departments.dept_no;
 
 ---- Query 05
 SELECT
-	last_name, first_name, sex
+	first_name, last_name, sex
 FROM
 	employees
 WHERE
